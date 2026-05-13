@@ -138,3 +138,109 @@ class pol_der(polinomio):
         nueva = [i * self.l[i] for i in range(1, len(self.l))]
         return pol_der[[b, m]]
         
+    
+import random
+import string 
+class Vehiculo:
+    # Todos los parametros que se encuentran en el __init__ el usuario los puede cambiar
+    def __init__(self, marca, modelo, año):
+        self.marca = marca
+        self.modelo = modelo
+        self.año = año
+        #EL usuario no lo modifica, este siempre inicia en cero 
+        self.velocidad = 0 
+
+    def acelerar(self, incremento):
+        self.velocidad += incremento
+        if self.velocidad > 200:
+            self.velocidad = 200
+
+
+    def frenar(self, decremento):
+        self.velocidad -= decremento
+        if self.velocidad < 0:
+            self.velocidad = 0
+
+    def __str__(self):
+        return f"{self.marca} {self.modelo} ({self.año})"
+
+
+class Auto(Vehiculo):
+    def __init__(self, marca, modelo, año, numero_puertas):
+        super().__init__(marca, modelo, año)
+        self.numero_puertas = numero_puertas
+        letras = ''.join(random.choices(string.ascii_uppercase, k=3))
+        digitos = ''.join(random.choices(string.digits, k=3))
+        self.placa = letras + digitos
+
+    def __str__(self):
+        return f"{self.marca} {self.modelo} - Placa: {self.placa} - Puertas: {self.numero_puertas}"
+
+
+class Moto(Vehiculo):
+    def __init__(self, marca, modelo, año, tipo):
+        super().__init__(marca, modelo, año)
+        self.tipo = tipo
+
+    def hacer_caballito(self):
+        if self.velocidad > 30:
+            return '¡Caballito!'
+        return 'Necesitas más velocidad'
+
+    def __str__(self):
+        return f"{self.marca} {self.modelo} - Tipo: {self.tipo}"
+    
+import math
+
+class Figura:
+    def __init__(self, color):
+        self.color = color
+
+    def area(self):
+        raise NotImplementedError('Implementar en subclase')
+
+    def perimetro(self):
+        raise NotImplementedError('Implementar en subclase')
+
+    def __str__(self):
+        return f"Figura de color {self.color}"
+
+    def descripcion(self):
+        tipo = type(self).__name__
+        return (f"Soy una {tipo} de color {self.color} "
+                f"con área {self.area():.2f} y perímetro {self.perimetro():.2f}")
+
+
+class Circulo(Figura):
+    def __init__(self, color, radio):
+        super().__init__(color)
+        self.radio = radio
+
+    def area(self):
+        return math.pi * self.radio ** 2
+
+    def perimetro(self):
+        return 2 * math.pi * self.radio
+
+    def __str__(self):
+        return f"Círculo de radio {self.radio} y color {self.color}"
+
+
+class Triangulo(Figura):
+    def __init__(self, color, base, altura, lado1, lado2, lado3):
+        super().__init__(color)
+        self.base = base
+        self.altura = altura
+        self.lado1 = lado1
+        self.lado2 = lado2
+        self.lado3 = lado3
+
+    def area(self):
+        return (self.base * self.altura) / 2
+
+    def perimetro(self):
+        return self.lado1 + self.lado2 + self.lado3
+
+    def __str__(self):
+        return f"Triángulo de base {self.base} y color {self.color}"
+    
