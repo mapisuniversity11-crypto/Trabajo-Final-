@@ -52,3 +52,89 @@ class VectoresR3:
 
     def __repr__(self):
         return f"VectoresR3({self.comp})"
+
+
+class cajero:
+    def __init__(self, n1, n2, n5):
+        self.n1 = n1
+        self.n2 = n2
+        self.n5 = n5
+    def retiro(self, x):
+        if x % 10000 != 0:
+            return "La cantidad debe ser un multiplo de 10000"
+        T_D =self.n1 * 10000 + self.n2 * 20000 + self.n5 * 50000 
+        if x > T_D:
+            return "Fondos insuficientes" 
+        restante = x
+        b5 = min(restante // 50000, self.n5)
+        restante -= b5 * 50000
+        b2 = min(restante // 20000, self.n2)
+        restante -= b2 * 20000
+        b1 = min(restante // 10000, self.n1)
+        restante -= b1 * 10000
+        if restante != 0:
+            return "disculpe, no hay disponibilidad de billetes para esa cantidad de dinero"
+        
+        self.n5 -= b5
+        self.n2 -= b2
+        self.n1 -= b1
+        return f"retiro exitoso: {b5} billetes de 50000, {b2}billetes de 20000, {b1} billetes de 10000"
+    def consignacion(self, n1, n2, n5):
+        self.n5 += n5
+        self.n2 += n2
+        self.n1 += n1
+        return f"Consignación exitosa. {self.verificar_estado()}"
+    def verificar_estado(self):
+        return f"Billetes de 10000: {self.n1}, Billetes de 20000: {self.n2}, Billetes de 50000: {self.n5}" 
+
+class polinomio:
+    def __init__(self, l):
+        self.l = L
+    def __str__(self):
+        terminos = []
+        for i, a in enumerate(self.l ):
+            if a == 0:
+                continue
+            if i == 0:
+                terminos.append(str(a))
+            elif i == 1:
+                terminos.append(f"{a}x")
+            else:
+                terminos.append(f"{a}x^{i}")
+        return "+".join(terminos) if terminos else "0"
+    
+    def __add__(self, other):
+        n = max(len(self.l), len(other.l))
+        L1 = self.l + [0] * (n- len(self.l))
+        L2 = other.l + [0] * (n- len(other.l))
+        return polinomio([L1[i] + L2[i] for i in range(n)])
+
+    def __sub__(self, other):
+        n = max(len(self.l), len(other.l))
+        L1 = self.l + [0] * (n- len(self.l))
+        L2 = other.l + [0] * (n- len(other.l))
+        return polinomio([L1[i] - L2[i] for i in range(n)])
+
+    def __rmul__(self, other):
+        n = len(self.l) + len(other.l) - 1
+        rta = [0] * n
+        for i, a  in enumerate(self.l):
+            for j ,b in enumerate(other.l):
+                rta[i+j] += a*b
+        return polinomio(rta)
+    
+    def evaluar(self, x):
+        return sum(self.l[i] * (x ** i) for i in range(len(self.l)))
+
+class pol_der(polinomio):
+    def grado(self):
+        l = self.l
+        while len(l) > 1 and l[-1] == 0:
+            l = l[::-1]
+        return len(l) - 1
+    def derivada(self):
+        if len(self.l) == 1:
+            return pol_der([0])
+        nueva = [i * self.l[i] for i in range(1, len(self.l))]
+        return pol_der[[b, m]]
+        
