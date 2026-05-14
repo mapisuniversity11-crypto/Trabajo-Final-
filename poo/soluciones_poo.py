@@ -89,7 +89,7 @@ class cajero:
 
 class polinomio:
     def __init__(self, l):
-        self.l = L
+        self.l = l
     def __str__(self):
         terminos = []
         for i, a in enumerate(self.l ):
@@ -128,15 +128,19 @@ class polinomio:
 
 class pol_der(polinomio):
     def grado(self):
-        l = self.l
-        while len(l) > 1 and l[-1] == 0:
-            l = l[::-1]
-        return len(l) - 1
+        l_temp = self.l[:] # Hacemos una copia para no modificar el original
+        while len(l_temp) > 1 and l_temp[-1] == 0:
+            l_temp.pop()
+        return len(l_temp) - 1
+
     def derivada(self):
-        if len(self.l) == 1:
+        if len(self.l) <= 1:
             return pol_der([0])
+        
+        # Calculamos los nuevos coeficientes: n * a_n
         nueva = [i * self.l[i] for i in range(1, len(self.l))]
-        return pol_der[[b, m]]
+        
+        return pol_der(nueva)
         
     
 import random
