@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+# --- DATOS Y PANDAS ---
 data = {
     'parcial1': [1.87, 0.78, 3.01, 4.16, 1.52, 3.06, 2.28, 2.96, 0.33, 1.52],
     'parcial2': [4.75, 0.78, 3.54, 1.06, 2.62, 0.70, 3.93, 0.23, 4.74, 0.49],
@@ -31,10 +32,11 @@ def AprobadosPorParcial(umbral=3.0):
 def TendenciaEstudiante(estudiante):
     notas = df.loc[estudiante].values
     x = np.arange(len(notas))
-    pendiente = np.polyfit(x, notas, 1)[0]
-    if pendiente > 0:
+    # m es la pendiente, b es el intercepto
+    m, b = np.polyfit(x, notas, 1) 
+    if m > 0:
         return 'mejora'
-    elif pendiente < 0:
+    elif m < 0:
         return 'desmejora'
     else:
         return 'estable'
